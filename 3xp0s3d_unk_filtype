@@ -1,0 +1,732 @@
+## Last commit: 2011-03-10 08:51:24 AST by s.rifaat
+version 9.6R1.13;
+system {
+    host-name KHT1-IGW1;
+    time-zone Asia/Riyadh;
+    default-address-selection;
+    authentication-order [ radius password ];
+    root-authentication {
+        encrypted-password "$1$lP2HWoJ7$fRaZQF8ehnG9Jm9hS6cxy1"; ## SECRET-DATA
+    }
+    name-server {
+        196.29.164.29;
+        196.29.180.29;
+    }
+    radius-server {
+        196.29.160.9 {
+            port 1812;
+            secret "$9$tB9mOEyMWxdVYLxDk.fn6evWLVYDjq.fzDiPQn6u0"; ## SECRET-DATA
+            source-address 196.29.178.21;
+        }
+        196.29.160.10 {
+            port 1812;
+            secret "$9$pEUvBhrW87Vb2X7jqm56/KM8Xb2ji.m5FjHfz6/0O"; ## SECRET-DATA
+            source-address 196.29.178.21;
+        }
+    }
+    login {
+        user derar {
+            uid 2000;
+            class super-user;
+            authentication {
+                encrypted-password "$1$IouRU4ID$sZKjD4TEYYOdO6xPdghFU/"; ## SECRET-DATA
+            }
+        }
+        user remote {
+            uid 2003;
+            class super-user;
+        }
+        user tsipcore {
+            uid 2002;
+            class super-user;
+            authentication {
+                encrypted-password "$1$xiF.bIzi$ElNQqcUATyJ/MTuVpK0ep/"; ## SECRET-DATA
+            }
+        }
+    }
+    services {
+        ftp;
+---(more)---
+
+        telnet {
+            connection-limit 5;
+            rate-limit 5;
+        }
+    }
+    syslog {
+        user * {
+            any emergency;
+        }
+        file messages {
+            any notice;
+            authorization info;
+        }
+    }
+    commit synchronize;
+    processes {
+        routing failover other-routing-engine;
+    }
+    ntp {
+        server 196.29.180.19 prefer;
+        server 196.29.164.14;
+        server 196.29.180.14;
+        source-address 196.29.178.21;
+    }
+}
+chassis {
+    redundancy {
+        failover {
+            on-loss-of-keepalives;
+            on-disk-failure;
+        }
+        graceful-switchover;
+    }
+    fpc 0 {
+        pic 0 {
+            framing sdh;
+        }
+        pic 1 {
+            framing sdh;
+        }
+    }
+    alarm {
+        management-ethernet {
+            link-down ignore;
+        }
+    }
+}
+interfaces {
+    so-0/0/0 {
+        description TO-FLAG-FTIL-7429;
+        mtu 4470;
+        hold-time up 10000 down 10000;
+        clocking external;
+        encapsulation ppp;
+        framing {
+            sdh;
+        }
+        sonet-options {
+            fcs 32;
+            payload-scrambler;
+        }
+        unit 0 {
+            family inet {
+                address 80.77.0.46/30;
+            }
+        }
+    }
+    so-0/0/1 {
+        description FLAG-FTIL-7616;
+        mtu 4470;
+        hold-time up 10000 down 10000;
+        clocking external;
+        encapsulation ppp;
+        framing {
+            sdh;
+        }
+        sonet-options {
+            fcs 32;
+            payload-scrambler;
+        }
+        unit 0 {
+            family inet {
+                address 80.81.64.202/30;
+            }
+        }
+    }
+    so-0/0/2 {
+        description TO-FLAG-FTIL-7484;
+        mtu 4466;
+        hold-time up 10000 down 10000;
+        clocking external;
+        encapsulation ppp;
+        framing {
+            sdh;
+        }
+        sonet-options {
+            fcs 32;
+            payload-scrambler;
+        }
+        unit 0 {
+            family inet {
+                address 62.216.147.146/30;
+            }
+        }
+    }
+    so-0/0/3 {
+        description TO-FLAG-FTIL-7615;
+        mtu 4470;
+        hold-time up 10000 down 10000;
+        clocking external;
+        encapsulation ppp;
+        framing {
+            sdh;
+        }
+        sonet-options {
+            fcs 32;
+            payload-scrambler;
+        }
+        unit 0 {
+            family inet {
+                address 80.81.64.198/30;
+            }
+        }
+    }
+    so-0/1/0 {
+        description PCCW;
+        mtu 4470;
+        hold-time up 10000 down 10000;
+        clocking external;
+        encapsulation cisco-hdlc;
+        framing {
+            sdh;
+        }
+        sonet-options {
+            fcs 16;
+            payload-scrambler;
+        }
+        unit 0 {
+            family inet {
+                address 63.218.253.198/30;
+            }
+        }
+    }
+    so-0/1/1 {
+        description FLAG-FTIL-7617;
+        mtu 4470;
+        hold-time up 10000 down 10000;
+        clocking external;
+        encapsulation ppp;
+        framing {
+            sdh;
+        }
+        sonet-options {
+            fcs 32;
+            payload-scrambler;
+        }
+        unit 0 {
+            family inet {
+                address 80.81.64.206/30;
+            }
+        }
+    }
+    so-0/1/2 {
+        description To-NTT-FOR-ZAIN-NE511-12-SLT1-10;
+        mtu 4470;
+        hold-time up 10000 down 10000;
+        clocking external;
+        encapsulation ppp;
+        framing {
+            sdh;
+        }
+        sonet-options {
+            fcs 32;
+            payload-scrambler;
+        }
+        unit 0 {
+            family inet {
+                address 83.231.235.130/30;
+            }
+        }
+    }
+    so-0/1/3 {
+        description TO-NE511-12-SLT1-12-FTIL-RGBS01A105-NTT-for-ZAIN;
+        mtu 4470;
+        hold-time up 10000 down 10000;
+        clocking external;
+        encapsulation ppp;
+        framing {
+            sdh;
+        }
+        sonet-options {
+            fcs 32;
+            payload-scrambler;
+        }
+        unit 0 {
+            family inet {
+                address 83.231.235.154/30;
+            }
+        }
+    }
+    ge-1/0/0 {
+        description TO-KHT3-IGW1-514:1:EGS:port1;
+        unit 0 {
+            family inet {
+                address 196.29.176.213/30;
+            }
+        }
+    }
+    ge-1/0/1 {
+        description TO-KHT1-CR1;
+        unit 0 {
+            family inet {
+                address 196.29.176.217/30;
+            }
+        }
+    }
+    ge-1/0/2 {
+        description TO-KHT1-CR2;
+        unit 0 {
+            family inet {
+                address 196.29.176.221/30;
+            }
+        }
+    }
+    ge-1/0/3 {
+        disable;
+        unit 0;
+    }
+    lo0 {
+        unit 0 {
+            family inet {
+                filter {
+                    input RE-PROTECT;
+                }
+                address 196.29.178.21/32;
+            }
+        }
+    }
+}
+snmp {
+    community "!WHEFW1" {
+        authorization read-only;
+        clients {
+            196.29.160.80/29;
+            196.29.160.176/29;
+            196.29.160.128/29;
+            196.29.164.61/32;
+            196.29.164.28/32;
+        }
+    }
+    trap-group DMS {
+        version v2;
+        targets {
+            196.29.160.84;
+        }
+    }
+}
+routing-options {
+    static {
+        route 62.216.129.3/32 next-hop [ 80.81.64.197 80.81.64.201 80.81.64.205 ];
+        route 0.0.0.0/0 next-hop [ 80.77.0.45 63.218.253.197 ];
+        route 129.250.1.169/32 next-hop [ 83.231.235.153 83.231.235.129 ];
+    }
+    aggregate {
+        route 196.29.160.0/19 discard;
+        route 41.202.160.0/19 discard;
+        route 197.254.192.0/18 discard;
+    }
+    maximum-paths 5242880;
+    maximum-prefixes 1048576;
+    router-id 196.29.178.21;
+    autonomous-system 33788;
+    forwarding-table {
+        export LOAD-BALANCE;
+    }
+}
+protocols {
+    bgp {
+        group EBGP {
+            type external;
+            neighbor 80.77.0.45 {
+                description FLAG-UK;
+                authentication-key "$9$XWTNdsiHmf5Fs2aGDjPfuO1REyevL"; ## SECRET-DATA
+                export CANAR;
+                peer-as 15412;
+            }
+            neighbor 62.216.147.145 {
+                description FLAG-FOR-SUDATEL;
+                import NONE;
+                authentication-key "$9$KsRWLNJZjHkPNdsgoaiH/Ctu0IhSe"; ## SECRET-DATA
+                export SUDATEL;
+                peer-as 15412;
+            }
+            neighbor 62.216.129.3 {
+                description FLAG-FOR-ZAIN;
+                multihop {
+                    ttl 2;
+                }
+                local-address 196.29.178.21;
+                import NONE;
+                authentication-key "$9$VGsoZHkmQF6BIESlMx7Vbs24J5Tz6/Ap0v8XxVb.mf"; ## SECRET-DATA
+                export ZAIN;
+                peer-as 15412;
+            }
+            neighbor 63.218.253.197 {
+                description PCCW;
+                authentication-key "$9$fQ/CO1RESrCAWLN-sYg4aGiq.P5TFnPf"; ## SECRET-DATA
+                export CANAR;
+                peer-as 3491;
+            }
+            neighbor 129.250.1.169 {
+                description NTT-FOR-ZAIN;
+                multihop {
+                    ttl 2;
+                }
+                local-address 196.29.178.21;
+                import NONE;
+                authentication-key "$9$OSYIIcrM87bYoGDi.fzCAp0BRyKW8xsYo8XDiHqf5"; ## SECRET-DATA
+                export ZAIN-NEW;
+                peer-as 2914;
+            }
+        }
+        group IBGP {
+            type internal;
+            local-address 196.29.178.21;
+            export NEXT-HOP-SELF;
+            neighbor 196.29.178.18 {
+                description TO-KHT1-LL01;
+                export NONE;
+            }
+            neighbor 196.29.178.22 {
+                description TO-KHT1-CR2;
+                export NONE;
+            }
+            neighbor 196.29.178.24 {
+                description TO-KHT1-CR1;
+                export NONE;
+            }
+        }
+    }
+    ospf {
+        export OSPF-DEFAULT;
+        area 0.0.0.0 {
+            interface lo0.0 {
+                passive;
+            }
+            interface ge-1/0/1.0 {
+                interface-type p2p;
+                authentication {
+                    md5 1 key "$9$fz/tu0IrlM/CtOB1rl24aUHm/9pIRSqm1h"; ## SECRET-DATA
+                }
+            }
+            interface ge-1/0/2.0 {
+                interface-type p2p;
+                authentication {
+                    md5 1 key "$9$dtsoGDjqQz6oJGiHkQzhSrvLNoaUq.5xNkP"; ## SECRET-DATA
+                }
+            }
+            interface ge-1/0/0.0 {
+                interface-type p2p;
+                authentication {
+                    md5 1 key "$9$PQ6Apu1yrv69A0OByrYgoGi.6/t1Ick.BE"; ## SECRET-DATA
+                }
+            }
+        }
+    }
+}
+policy-options {
+    prefix-list MGMT_LIST {
+        196.29.160.112/28;
+        196.29.164.166/32;
+        196.29.176.0/24;
+        196.29.178.15/32;
+        196.29.178.21/32;
+    }
+    prefix-list BGP_LIST {
+        apply-path "protocols bgp group <*> neighbor <*>";
+    }
+    prefix-list CUSTOMER_BGP_LIST {
+        apply-path "routing-instances <*> protocols bgp group <*> neighbor <*>";
+    }
+    prefix-list LDP_LIST {
+        apply-path "protocols ldp session <*>";
+    }
+    prefix-list SNMP_LIST {
+        196.29.160.80/29;
+        196.29.160.128/29;
+        196.29.160.176/29;
+        196.29.164.28/32;
+        196.29.164.61/32;
+    }
+    prefix-list DNS_LIST {
+        apply-path "system name-server <*>";
+    }
+    prefix-list RADIUS_LIST {
+        apply-path "system radius-server <*>";
+    }
+    prefix-list NTP_LIST {
+        62.119.40.98/32;
+        192.36.143.151/32;
+        apply-path "system ntp server <*>";
+    }
+    prefix-list sudatel-temp {
+        41.67.0.0/18;
+        196.1.192.0/18;
+        196.202.128.0/19;
+        212.0.128.0/19;
+    }
+    policy-statement CANAR {
+        term 1 {
+            from {
+                protocol aggregate;
+                route-filter 196.29.160.0/19 exact;
+                route-filter 41.202.160.0/19 exact;
+                route-filter 197.254.192.0/18 exact;
+            }
+            then {
+                as-path-prepend 33788;
+                accept;
+            }
+        }
+        term 2 {
+            from {
+                protocol bgp;
+                route-filter 41.78.108.0/22 exact;
+                route-filter 41.67.54.0/23 exact;
+                route-filter 41.67.52.0/22 exact;
+            }
+            then {
+                as-path-prepend 33788;
+                accept;
+            }
+        }
+        term 3 {
+            then reject;
+        }
+    }
+    policy-statement LOAD-BALANCE {
+        then {
+            load-balance per-packet;
+        }
+    }
+    policy-statement NEXT-HOP-SELF {
+        term 1 {
+            from protocol bgp;
+            then {
+                next-hop self;
+                accept;
+            }
+        }
+    }
+    policy-statement NONE {
+        term 1 {
+            then reject;
+        }
+    }
+    policy-statement OSPF-DEFAULT {
+        term 1 {
+            from {
+                protocol static;
+                route-filter 0.0.0.0/0 exact;
+            }
+            then {
+                metric 10;
+                external {
+                    type 1;
+                }
+                accept;
+            }
+        }
+    }
+    policy-statement SUDATEL {
+        term 1 {
+            from {
+                route-filter 212.0.138.0/24 exact;
+                route-filter 41.209.64.0/23 exact;
+                route-filter 41.209.64.0/24 exact;
+                route-filter 41.209.67.0/24 exact;
+                route-filter 41.209.64.0/22 exact;
+                route-filter 41.209.122.0/24 exact;
+                route-filter 41.209.118.0/24 exact;
+                route-filter 41.209.124.0/24 exact;
+                route-filter 41.209.80.0/24 exact;
+                route-filter 41.209.81.0/24 exact;
+                route-filter 41.209.112.0/24 exact;
+                route-filter 41.209.113.0/24 exact;
+                route-filter 41.209.123.0/24 exact;
+                route-filter 41.209.121.0/24 exact;
+            }
+            then accept;
+        }
+        term 2 {
+            then reject;
+        }
+    }
+    policy-statement ZAIN {
+        term 1 {
+            from {
+                protocol bgp;
+                route-filter 41.223.200.0/22 exact;
+                route-filter 41.223.202.0/23 exact;
+                route-filter 41.95.0.0/16 exact;
+                route-filter 41.95.4.0/22 exact;
+            }
+            then accept;
+        }
+        term 2 {
+            then reject;
+        }
+    }
+    policy-statement ZAIN-NEW {
+        term 1 {
+            from {
+                route-filter 41.95.10.0/23 exact;
+                route-filter 41.95.0.0/16 exact;
+            }
+            then accept;
+        }
+        term 2 {
+            then reject;
+        }
+    }
+    policy-statement sudatel-temp {
+        term 1 {
+            from as-path SUD;
+            then accept;
+        }
+        term 2 {
+            then reject;
+        }
+    }
+    as-path SUD 15706;
+}
+firewall {
+    policer ICMP-POLICER {
+        if-exceeding {
+            bandwidth-limit 1m;
+            burst-size-limit 15k;
+        }
+        then discard;
+    }
+    policer TRACEROUTE-POLICER {
+        if-exceeding {
+            bandwidth-limit 1m;
+            burst-size-limit 15k;
+        }
+        then discard;
+    }
+    family inet {
+        filter RE-PROTECT {
+            term ESTABLISHED {
+                from {
+                    protocol tcp;
+                    tcp-established;
+                }
+                then accept;
+            }
+            term VRRP_FILTER {
+                from {
+                    protocol vrrp;
+                }
+                then accept;
+            }
+            term BGP-FILTER {
+                from {
+                    source-prefix-list {
+                        BGP_LIST;
+                        CUSTOMER_BGP_LIST;
+                    }
+                    fragment-offset 0;
+                    protocol tcp;
+                    port bgp;
+                }
+                then accept;
+            }
+            term LDP-FILTER {
+                from {
+                    source-prefix-list {
+                        LDP_LIST;
+                    }
+                    fragment-offset 0;
+                    protocol [ tcp udp ];
+                    port ldp;
+                }
+                then accept;
+            }
+            term RSVP-FILTER {
+                from {
+                    protocol rsvp;
+                }
+                then accept;
+            }
+            term MGMT-FILTER {
+                from {
+                    source-prefix-list {
+                        MGMT_LIST;
+                    }
+                    protocol tcp;
+                    port [ ssh telnet ftp ftp-data ];
+                }
+                then accept;
+            }
+            term SNMP-FILTER {
+                from {
+                    source-prefix-list {
+                        SNMP_LIST;
+                    }
+                    fragment-offset 0;
+                    protocol udp;
+                    destination-port snmp;
+                }
+                then accept;
+            }
+            term DNS-FILTER {
+                from {
+                    source-prefix-list {
+                        DNS_LIST;
+                    }
+                    fragment-offset 0;
+                    protocol udp;
+                    source-port domain;
+                }
+                then accept;
+            }
+            term ICMP-FILTER {
+                from {
+                    protocol icmp;
+                    icmp-type [ echo-request echo-reply time-exceeded unreachable ];
+                }
+                then {
+                    policer ICMP-POLICER;
+                    accept;
+                }
+            }
+            term TRACEROUTE-FILTER {
+                from {
+                    protocol udp;
+                    destination-port 33434-33523;
+                }
+                then {
+                    policer TRACEROUTE-POLICER;
+                    accept;
+                }
+            }
+            term NTP-FILTER {
+                from {
+                    protocol udp;
+                    port ntp;
+                }
+                then accept;
+            }
+            term RADIUS-FILTER {
+                from {
+                    source-prefix-list {
+                        RADIUS_LIST;
+                    }
+                    protocol [ tcp udp ];
+                    port 1812;
+                }
+                then accept;
+            }
+            term BFD-FILTER {
+                from {
+                    protocol udp;
+                    port 3784;
+                }
+                then accept;
+            }
+            term OSPF-FILTER {
+                from {
+                    protocol ospf;
+                }
+                then accept;
+            }
+            term REJECT-ALL {
+                then {
+                    discard;
+                }
+            }
+        }
+    }
+}
